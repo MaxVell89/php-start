@@ -1,33 +1,34 @@
 <?php
+require_once ROOT . '/components/DB.php';
 
 class News
 {
 
-		public static function getNewsList() 
+	public static function getNewsList() 
 	{
 		// LIST
-		$host = 'localhost';
-		$dbname = 'testblog';
-		$user = 'root';
-		$password = '';
 
-		$db = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+		$db = DB::getConnection();
 
 		$newsList =[];
 
-		$sql = 'SELECT * FROM articles ORDER BY date DESC LIMIT 10';
+		$sql = 'SELECT id, date, title, text FROM articles ORDER BY date DESC LIMIT 10';
 		$res = $db->query($sql);
 
-		$result = $res->fetchAll();
-		var_dump($result);
-
-
-
+		$res->setFetchMode(PDO::FETCH_ASSOC);
+		return $res->fetchAll();
 	}
 
 	public static function getNewsItemById($id) 
 	{
 		// Одна новость
+		$db = DB::getConnection();
+
+		$sql = 'SELECT id, date, title, text FROM articles WHERE id = ' . $id;
+		$res = $db->query($sql);
+
+		$res->setFetchMode(PDO::FETCH_ASSOC);
+		return $res->fetch();	
 	}
 
 }
