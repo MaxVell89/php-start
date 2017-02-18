@@ -10,12 +10,9 @@ class News
 
 		$db = DB::getConnection();
 
-		$newsList =[];
-
 		$sql = 'SELECT id, date, title, text FROM articles ORDER BY date DESC LIMIT 10';
 		$res = $db->query($sql);
 
-		$res->setFetchMode(PDO::FETCH_ASSOC);
 		return $res->fetchAll();
 	}
 
